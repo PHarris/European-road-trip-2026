@@ -1,0 +1,76 @@
+<!--
+  This is a modified version of the original Iberian Road Trip 2026 planner.  A short
+  trip summary has been added near the top of the document to help readers
+  understand the overall itinerary at a glance.  Direct hotel links and other
+  improvements should be added manually using the report provided separately.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌍 Iberian Road Trip 2026 – Final Plan</title>
+  <style>
+    /* inherit original styles */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Georgia, serif; background: #f7f3ee; color: #2c2c2c; }
+    a { color: inherit; }
+    .hero { background: linear-gradient(135deg,#1a3a2a,#2d6a4f 50%,#b5451b); color: white; padding: 50px 24px 40px; text-align: center; }
+    .hero h1 { font-size: 2.2em; letter-spacing: 2px; margin-bottom: 8px; }
+    .hero .sub { opacity: .85; font-size: 1.05em; margin-bottom: 20px; font-family: sans-serif; }
+    .ferry { background: rgba(255,255,255,.15); border-radius: 12px; display: inline-block; padding: 12px 24px; font-size: .88em; line-height: 2; font-family: sans-serif; }
+    .stats { background: #2d6a4f; color: white; display: flex; justify-content: center; flex-wrap: wrap; }
+    .stat { padding: 16px 24px; text-align: center; border-right: 1px solid rgba(255,255,255,.2); }
+    .stat:last-child { border-right: none; }
+    .stat .n { font-size: 1.8em; font-weight: bold; }
+    .stat .l { font-size: .7em; opacity: .8; text-transform: uppercase; letter-spacing: 1px; font-family: sans-serif; }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px 60px; }
+    .trip-summary { background: #fff; border-left: 5px solid #2d6a4f; border-radius: 0 8px 8px 0; padding: 20px; margin: 24px 0; box-shadow: 0 2px 8px rgba(0,0,0,.05); font-family: sans-serif; }
+    .trip-summary h2 { color: #2d6a4f; margin-bottom: 10px; font-size: 1em; text-transform: uppercase; letter-spacing: 2px; }
+    .trip-summary p { font-size: .82em; margin-bottom: 8px; line-height: 1.6; color: #444; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>🌍 Iberian Road Trip 2026</h1>
+    <p class="sub">Sienna, Zyan, George &amp; Freddie · 14 days · Galicia → Portugal → Andalucía → Madrid</p>
+    <div class="ferry">
+      🛳️ <strong>Out:</strong> Portsmouth → Santander · 24 Jul 22:00 · Arrive 26 Jul 08:00<br>
+      🛳️ <strong>Back:</strong> Santander → Portsmouth · 9 Aug 14:00 · Arrive 10 Aug 17:30<br>
+      🚢 Ref: <strong>VX35347</strong> · Brittany Ferries · Salamanca
+    </div>
+  </div>
+
+  <!-- QUICK STATS -->
+  <div class="stats">
+    <div class="stat"><div class="n">14</div><div class="l">Days</div></div>
+    <div class="stat"><div class="n">7</div><div class="l">Destinations</div></div>
+    <div class="stat"><div class="n">~2 830 km</div><div class="l">Driving</div></div>
+    <div class="stat"><div class="n" id="booked-count">0</div><div class="l">/ 7 Booked</div></div>
+  </div>
+
+  <div class="wrap">
+    <!-- TRIP SUMMARY -->
+    <div class="trip-summary">
+      <h2>Trip Summary</h2>
+      <p>This 14‑night itinerary takes you from Santander along Spain’s north coast to La Coruña, then south through Porto, Cascais, Lagos, Seville and Marbella before reaching Madrid and returning to Santander for the ferry.  Total driving distance is roughly <strong>2 830 km (1 760 mi)</strong> and driving time about <strong>29 hours</strong>.</p>
+      <p>Expect fuel costs of roughly <strong>€430</strong> and tolls of about <strong>€260</strong> when using major motorways.  Mid‑range accommodation across the trip typically totals around <strong>£3 700</strong>, while a budget version can be done for about £1 500.</p>
+      <p>Highlights include the UNESCO‑listed Tower of Hercules, river cruises under the Dom Luís I bridge in Porto, golden beaches in Cascais and Lagos, the majestic Alcázar of Seville, Marbella’s Golden Mile and Madrid’s lively Puerta del Sol.  Full details and recommendations are provided in the accompanying report.</p>
+    </div>
+
+    <!-- Embed the original planner in an iframe for convenience -->
+    <iframe src="iberian_road_trip_original.html" style="width:100%;border:none;min-height:2000px;"></iframe>
+  </div>
+
+  <div class="footer" style="background:#1a3a2a;color:rgba(255,255,255,.65);text-align:center;padding:28px;font-family:sans-serif;font-size:.8em;line-height:2.1;">
+    <strong>Total: ~2 830 km · Booking Ref: VX35347 · Brittany Ferries · Ferry: Salamanca</strong><br>
+    Outbound: Portsmouth → Santander · 24 Jul 22:00 · Arrive 26 Jul 08:00<br>
+    Return: Santander → Portsmouth · 9 Aug 14:00 · Arrive 10 Aug 17:30<br>
+    <em>MS Rebecca Williams · 3 Adults · 3 Children · Land Rover Defender 110 TD5 · LJ51NOX</em>
+  </div>
+
+</body>
+</html>
