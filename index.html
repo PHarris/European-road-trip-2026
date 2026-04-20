@@ -1,76 +1,1236 @@
-<!--
-  This is a modified version of the original Iberian Road Trip 2026 planner.  A short
-  trip summary has been added near the top of the document to help readers
-  understand the overall itinerary at a glance.  Direct hotel links and other
-  improvements should be added manually using the report provided separately.
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🌍 Iberian Road Trip 2026 – Final Plan</title>
+  <title>🌍 Iberian Road Trip 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    /* inherit original styles */
+    :root {
+      --forest: #1a3a2a;
+      --green: #2d6a4f;
+      --green-light: #3d8a68;
+      --terra: #b5451b;
+      --cream: #f7f3ee;
+      --sand: #e8e0d5;
+      --ink: #1c1c1c;
+      --muted: #6b6b6b;
+      --white: #ffffff;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Georgia, serif; background: #f7f3ee; color: #2c2c2c; }
-    a { color: inherit; }
-    .hero { background: linear-gradient(135deg,#1a3a2a,#2d6a4f 50%,#b5451b); color: white; padding: 50px 24px 40px; text-align: center; }
-    .hero h1 { font-size: 2.2em; letter-spacing: 2px; margin-bottom: 8px; }
-    .hero .sub { opacity: .85; font-size: 1.05em; margin-bottom: 20px; font-family: sans-serif; }
-    .ferry { background: rgba(255,255,255,.15); border-radius: 12px; display: inline-block; padding: 12px 24px; font-size: .88em; line-height: 2; font-family: sans-serif; }
-    .stats { background: #2d6a4f; color: white; display: flex; justify-content: center; flex-wrap: wrap; }
-    .stat { padding: 16px 24px; text-align: center; border-right: 1px solid rgba(255,255,255,.2); }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(150deg, var(--forest) 0%, var(--green) 55%, #3a5a35 100%);
+      color: white;
+      padding: 56px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      position: relative;
+    }
+    .hero .sub {
+      opacity: .8;
+      font-size: .95em;
+      margin-bottom: 28px;
+      font-weight: 300;
+      letter-spacing: .5px;
+    }
+    .ferry-box {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 14px;
+      display: inline-block;
+      padding: 16px 28px;
+      font-size: .85em;
+      line-height: 2.1;
+      backdrop-filter: blur(4px);
+      text-align: left;
+    }
+    .ferry-box strong { color: #a8d8b0; }
+
+    /* ── STATS BAR ── */
+    .stats {
+      background: var(--forest);
+      color: white;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .stat {
+      padding: 18px 28px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,.15);
+    }
     .stat:last-child { border-right: none; }
-    .stat .n { font-size: 1.8em; font-weight: bold; }
-    .stat .l { font-size: .7em; opacity: .8; text-transform: uppercase; letter-spacing: 1px; font-family: sans-serif; }
-    .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px 60px; }
-    .trip-summary { background: #fff; border-left: 5px solid #2d6a4f; border-radius: 0 8px 8px 0; padding: 20px; margin: 24px 0; box-shadow: 0 2px 8px rgba(0,0,0,.05); font-family: sans-serif; }
-    .trip-summary h2 { color: #2d6a4f; margin-bottom: 10px; font-size: 1em; text-transform: uppercase; letter-spacing: 2px; }
-    .trip-summary p { font-size: .82em; margin-bottom: 8px; line-height: 1.6; color: #444; }
+    .stat .n {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9em;
+      font-weight: 600;
+      line-height: 1;
+    }
+    .stat .l {
+      font-size: .68em;
+      opacity: .65;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 3px;
+    }
+
+    /* ── MAIN WRAP ── */
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+
+    /* ── TRIP SUMMARY ── */
+    .trip-summary {
+      background: var(--white);
+      border-left: 5px solid var(--green);
+      border-radius: 0 10px 10px 0;
+      padding: 24px 28px;
+      margin: 32px 0;
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
+    }
+    .trip-summary h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--green);
+      margin-bottom: 12px;
+      font-size: 1.1em;
+      letter-spacing: .5px;
+    }
+    .trip-summary p {
+      font-size: .88em;
+      color: #444;
+      margin-bottom: 8px;
+      line-height: 1.7;
+    }
+    .trip-summary p:last-child { margin-bottom: 0; }
+
+    /* ── ITINERARY TABLE ── */
+    .itin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
+      margin: 0 0 40px;
+      font-size: .85em;
+    }
+    .itin-table th {
+      background: var(--forest);
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 500;
+      letter-spacing: .5px;
+      font-size: .8em;
+      text-transform: uppercase;
+    }
+    .itin-table td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--sand);
+      vertical-align: middle;
+    }
+    .itin-table tr:last-child td { border-bottom: none; }
+    .itin-table tr:nth-child(even) td { background: #faf8f5; }
+    .stop-num {
+      width: 28px;
+      height: 28px;
+      background: var(--green);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75em;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .stop-cell { display: flex; align-items: center; gap: 10px; }
+    .booked-badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: .75em;
+      font-weight: 500;
+    }
+    .not-booked { color: var(--muted); font-size: .78em; }
+
+    /* ── ALERTS ── */
+    .alert {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 0 0 32px;
+      font-size: .85em;
+      line-height: 1.7;
+    }
+    .alert strong { color: #e65100; }
+
+    /* ── SECTION HEADER ── */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55em;
+      font-weight: 600;
+      margin: 40px 0 6px;
+      color: var(--forest);
+    }
+    .section-divider {
+      height: 3px;
+      width: 48px;
+      background: var(--terra);
+      margin-bottom: 20px;
+      border-radius: 2px;
+    }
+
+    /* ── DESTINATION BLOCK ── */
+    .dest {
+      background: var(--white);
+      border-radius: 14px;
+      box-shadow: 0 2px 20px rgba(0,0,0,.07);
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .dest-header {
+      background: linear-gradient(135deg, var(--forest), var(--green));
+      color: white;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .dest-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3em;
+      font-weight: 600;
+    }
+    .dest-header .meta {
+      font-size: .82em;
+      opacity: .85;
+      margin-top: 2px;
+    }
+    .dest-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 13px;
+      border-radius: 20px;
+      font-size: .78em;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      text-decoration: none;
+    }
+    .btn-airbnb { background: #ff5a5f; color: white; }
+    .btn-airbnb:hover { background: #e04e53; }
+    .btn-booking { background: #003580; color: white; }
+    .btn-booking:hover { background: #002a6a; }
+    .btn-maps { background: rgba(255,255,255,.2); color: white; border: 1px solid rgba(255,255,255,.35); }
+    .btn-maps:hover { background: rgba(255,255,255,.3); }
+
+    /* ── HOTEL CARD ── */
+    .hotels { padding: 18px 20px; display: grid; gap: 12px; }
+    .hotel-card {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--cream);
+      border-radius: 10px;
+      border: 1px solid var(--sand);
+      transition: box-shadow .2s;
+    }
+    .hotel-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,.08); }
+    .hotel-card.booked {
+      background: #e8f5e9;
+      border-color: #a5d6a7;
+    }
+    .hotel-left { flex: 1; }
+    .hotel-name {
+      font-weight: 500;
+      font-size: .92em;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+    .tier {
+      font-size: .75em;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .hotel-meta {
+      font-size: .78em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .hotel-amenities {
+      font-size: .74em;
+      color: var(--muted);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    .hotel-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .btn-direct {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 11px;
+      background: var(--green);
+      color: white;
+      border-radius: 16px;
+      font-size: .74em;
+      font-weight: 500;
+      transition: background .2s;
+    }
+    .btn-direct:hover { background: var(--green-light); }
+    .hotel-right { text-align: right; flex-shrink: 0; }
+    .hotel-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1em;
+      font-weight: 600;
+      color: var(--forest);
+    }
+    .hotel-price-sub { font-size: .72em; color: var(--muted); }
+    .hotel-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: .78em;
+      color: #f59e0b;
+      margin-top: 4px;
+    }
+    .star { font-size: .7em; }
+
+    /* ── BOOK CHECKBOX ── */
+    .book-check-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .book-check {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--green);
+      cursor: pointer;
+    }
+    .book-label { font-size: .78em; color: var(--muted); cursor: pointer; }
+
+    /* ── TRACKER TABLE ── */
+    .tracker {
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .tracker-header {
+      background: var(--forest);
+      color: white;
+      padding: 14px 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1em;
+      letter-spacing: .5px;
+    }
+    .tracker table { width: 100%; border-collapse: collapse; font-size: .84em; }
+    .tracker td { padding: 10px 16px; border-bottom: 1px solid var(--sand); vertical-align: middle; }
+    .tracker tr:last-child td { border-bottom: none; }
+    .tracker td:first-child { font-weight: 500; }
+    .status-yes { color: #2e7d32; font-weight: 500; }
+    .status-no { color: var(--terra); }
+    .progress-bar-wrap { height: 6px; background: var(--sand); border-radius: 3px; margin-top: 8px; }
+    .progress-bar { height: 6px; background: var(--green); border-radius: 3px; transition: width .5s; }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--forest);
+      color: rgba(255,255,255,.65);
+      text-align: center;
+      padding: 32px 20px;
+      font-size: .8em;
+      line-height: 2.2;
+    }
+    .footer strong { color: rgba(255,255,255,.9); }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8em; }
+      .stats { justify-content: space-around; }
+      .stat { padding: 14px 16px; }
+      .dest-header { flex-direction: column; }
+      .hotel-card { flex-direction: column; }
+      .hotel-right { text-align: left; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- HERO -->
-  <div class="hero">
-    <h1>🌍 Iberian Road Trip 2026</h1>
-    <p class="sub">Sienna, Zyan, George &amp; Freddie · 14 days · Galicia → Portugal → Andalucía → Madrid</p>
-    <div class="ferry">
-      🛳️ <strong>Out:</strong> Portsmouth → Santander · 24 Jul 22:00 · Arrive 26 Jul 08:00<br>
-      🛳️ <strong>Back:</strong> Santander → Portsmouth · 9 Aug 14:00 · Arrive 10 Aug 17:30<br>
-      🚢 Ref: <strong>VX35347</strong> · Brittany Ferries · Salamanca
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<div class="hero">
+  <h1>🌍 Iberian Road Trip 2026</h1>
+  <p class="sub">Peter &amp; Becky · Sienna, Zyan, George &amp; Freddie · 13 nights · Galicia → Portugal → Andalucía → Madrid</p>
+  <div class="ferry-box">
+    🛳️ <strong>Outbound:</strong> Portsmouth → Santander · 24 Jul 22:00 · Arrive 26 Jul 08:00<br>
+    🛳️ <strong>Return:</strong> Santander → Portsmouth · 9 Aug 14:00 · Arrive 10 Aug 17:30<br>
+    🚢 Ref: <strong>VX35347</strong> · Brittany Ferries · Vessel: Salamanca<br>
+    🚗 <strong>MS Rebecca Williams</strong> · 2 Adults · 4 Children (16, 11, 14, 14) · LJ51NOX
+  </div>
+</div>
+
+<!-- ═══════════════════ STATS ═══════════════════ -->
+<div class="stats">
+  <div class="stat"><div class="n">13</div><div class="l">Nights</div></div>
+  <div class="stat"><div class="n">6</div><div class="l">Destinations</div></div>
+  <div class="stat"><div class="n">~2,600 km</div><div class="l">Driving</div></div>
+  <div class="stat"><div class="n" id="booked-count">0</div><div class="l">/ 6 Booked</div></div>
+</div>
+
+<div class="wrap">
+
+  <!-- ═══════════════════ TRIP SUMMARY ═══════════════════ -->
+  <div class="trip-summary">
+    <h2>Trip Summary</h2>
+    <p>From Santander, head north-west along the Galician coast to La Coruña (1 night), then drive south to Porto/Matosinhos (2 nights) for city culture, great seafood and the Atlantic. Continue to Cascais (2 nights) for beaches and a Sintra day trip, then south to Lagos in the Algarve (4 nights — the longest stay) for sea caves and clifftop sunsets.</p>
+    <p>From Lagos head east to Seville (2 nights) for the Alcázar and flamenco, then north-east to Madrid (1 night) for the Prado and Puerta del Sol before the overnight drive or early morning run back to Santander for the 9 Aug ferry.</p>
+    <p>Estimated fuel: <strong>~€400</strong> · Tolls: <strong>~€220</strong> · Note: check <strong>Madrid Low Emission Zone</strong> compatibility for Defender TD5 (LJ51NOX) before arrival.</p>
+  </div>
+
+  <!-- ═══════════════════ ITINERARY TABLE ═══════════════════ -->
+  <div class="section-title">Itinerary at a Glance</div>
+  <div class="section-divider"></div>
+
+  <table class="itin-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Destination</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Nights</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="itin-tbody">
+      <tr>
+        <td><div class="stop-cell"><div class="stop-num">1</div></div></td>
+        <td><strong>La Coruña</strong>, Spain</td>
+        <td>Sun 26 Jul</td><td>Mon 27 Jul</td><td>1</td>
+        <td><span class="not-booked" id="status-0">Not booked</span></td>
+      </tr>
+      <tr>
+        <td><div class="stop-cell"><div class="stop-num">2</div></div></td>
+        <td><strong>Porto</strong> / Matosinhos, Portugal</td>
+        <td>Mon 27 Jul</td><td>Wed 29 Jul</td><td>2</td>
+        <td><span class="not-booked" id="status-1">Not booked</span></td>
+      </tr>
+      <tr>
+        <td><div class="stop-cell"><div class="stop-num">3</div></div></td>
+        <td><strong>Cascais</strong>, Portugal</td>
+        <td>Wed 29 Jul</td><td>Fri 31 Jul</td><td>2</td>
+        <td><span class="not-booked" id="status-2">Not booked</span></td>
+      </tr>
+      <tr>
+        <td><div class="stop-cell"><div class="stop-num">4</div></div></td>
+        <td><strong>Lagos</strong>, Algarve, Portugal</td>
+        <td>Fri 31 Jul</td><td>Tue 4 Aug</td><td>4</td>
+        <td><span class="not-booked" id="status-3">Not booked</span></td>
+      </tr>
+      <tr>
+        <td><div class="stop-cell"><div class="stop-num">5</div></div></td>
+        <td><strong>Seville</strong>, Spain</td>
+        <td>Tue 4 Aug</td><td>Thu 6 Aug</td><td>2</td>
+        <td><span class="not-booked" id="status-4">Not booked</span></td>
+      </tr>
+      <tr>
+        <td><div class="stop-cell"><div class="stop-num">6</div></div></td>
+        <td><strong>Madrid</strong>, Spain</td>
+        <td>Thu 6 Aug</td><td>Fri 7 Aug</td><td>1</td>
+        <td><span class="not-booked" id="status-5">Not booked</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════ BOOKING TRACKER ═══════════════════ -->
+  <div class="tracker">
+    <div class="tracker-header">📋 Booking Tracker</div>
+    <table>
+      <tr>
+        <td>La Coruña</td>
+        <td>26–27 Jul · 1 night</td>
+        <td><span id="t-0" class="status-no">⏳ Not booked</span></td>
+      </tr>
+      <tr>
+        <td>Porto / Matosinhos</td>
+        <td>27–29 Jul · 2 nights</td>
+        <td><span id="t-1" class="status-no">⏳ Not booked</span></td>
+      </tr>
+      <tr>
+        <td>Cascais</td>
+        <td>29–31 Jul · 2 nights</td>
+        <td><span id="t-2" class="status-no">⏳ Not booked</span></td>
+      </tr>
+      <tr>
+        <td>Lagos, Algarve</td>
+        <td>31 Jul – 4 Aug · 4 nights</td>
+        <td><span id="t-3" class="status-no">⏳ Not booked</span></td>
+      </tr>
+      <tr>
+        <td>Seville</td>
+        <td>4–6 Aug · 2 nights</td>
+        <td><span id="t-4" class="status-no">⏳ Not booked</span></td>
+      </tr>
+      <tr>
+        <td>Madrid</td>
+        <td>6–7 Aug · 1 night</td>
+        <td><span id="t-5" class="status-no">⏳ Not booked</span></td>
+      </tr>
+    </table>
+    <div style="padding:12px 16px 16px;">
+      <div style="font-size:.78em;color:var(--muted);margin-bottom:5px;">Progress</div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progress" style="width:0%"></div></div>
     </div>
   </div>
 
-  <!-- QUICK STATS -->
-  <div class="stats">
-    <div class="stat"><div class="n">14</div><div class="l">Days</div></div>
-    <div class="stat"><div class="n">7</div><div class="l">Destinations</div></div>
-    <div class="stat"><div class="n">~2 830 km</div><div class="l">Driving</div></div>
-    <div class="stat"><div class="n" id="booked-count">0</div><div class="l">/ 7 Booked</div></div>
+  <!-- ═══════════════════ ADVANCE BOOKING ALERT ═══════════════════ -->
+  <div class="alert">
+    ⚠️ <strong>Book in Advance:</strong>
+    <strong>Royal Alcázar of Seville</strong> — <a href="https://www.alcazarsevilla.org" target="_blank" style="color:var(--terra)">alcazarsevilla.org</a> ·
+    <strong>Pena Palace, Sintra</strong> — <a href="https://www.parquesdesintra.pt" target="_blank" style="color:var(--terra)">parquesdesintra.pt</a> ·
+    <strong>Livraria Lello, Porto</strong> — <a href="https://www.livrarialello.pt" target="_blank" style="color:var(--terra)">livrarialello.pt</a> ·
+    <strong>Ponta da Piedade boat/kayak</strong> — book locally in Lagos ·
+    <strong>Madrid ZBE</strong> — verify Defender TD5 (LJ51NOX) at <a href="https://www.madrid.es/zbe" target="_blank" style="color:var(--terra)">madrid.es/zbe</a>
   </div>
 
-  <div class="wrap">
-    <!-- TRIP SUMMARY -->
-    <div class="trip-summary">
-      <h2>Trip Summary</h2>
-      <p>This 14‑night itinerary takes you from Santander along Spain's north coast to La Coruña, then south through Porto, Cascais, Lagos, Seville and Marbella before reaching Madrid and return[...]
-      <p>Expect fuel costs of roughly <strong>€430</strong> and tolls of about <strong>€260</strong> when using major motorways.  Mid‑range accommodation across the trip typically totals around [...]
-      <p>Highlights include the UNESCO‑listed Tower of Hercules, river cruises under the Dom Luís I bridge in Porto, golden beaches in Cascais and Lagos, the majestic Alcázar of Seville, Marbe[...]
+  <!-- ═══════════════════ HOTEL OPTIONS ═══════════════════ -->
+  <div class="section-title">Hotel Options by Destination</div>
+  <div class="section-divider"></div>
+  <p style="font-size:.83em;color:var(--muted);margin-bottom:24px;">All Airbnb &amp; Booking.com links pre-filled: 2 adults · 4 children (ages 16, 11, 14, 14). Tick a hotel when booked — your choice is saved automatically.</p>
+
+  <!-- ──────────── 1. LA CORUÑA ──────────── -->
+  <div class="dest" id="dest-0">
+    <div class="dest-header">
+      <div>
+        <h3>🏰 La Coruña, Spain</h3>
+        <div class="meta">Sun 26 Jul → Mon 27 Jul · 1 night · ~3.5 hrs from Santander</div>
+      </div>
+      <div class="dest-links">
+        <a href="https://www.airbnb.co.uk/s/A-Coruna--Spain/homes?checkin=2026-07-26&checkout=2026-07-27&adults=2&children=4&min_bedrooms=3" target="_blank" class="btn-sm btn-airbnb">🏠 Airbnb</a>
+        <a href="https://www.booking.com/searchresults.en-gb.html?dest_name=A+Coru%C3%B1a&checkin_year=2026&checkin_month=7&checkin_monthday=26&checkout_year=2026&checkout_month=7&checkout_monthday=27&group_adults=2&group_children=4&age=16&age=11&age=14&age=14" target="_blank" class="btn-sm btn-booking">🏨 Booking.com</a>
+        <a href="https://maps.google.com/?q=A+Coruña+Spain" target="_blank" class="btn-sm btn-maps">📍 Map</a>
+      </div>
     </div>
+    <div class="hotels">
 
-    <!-- Embed the original planner in an iframe for convenience -->
-    <iframe src="iberian_road_trip_original.html" style="width:100%;border:none;min-height:2000px;"></iframe>
+      <div class="hotel-card" id="hcard-0-0">
+        <div class="hotel-left">
+          <div class="hotel-name">Hotel Alda El Suizo <span class="tier">💰 Budget</span></div>
+          <div class="hotel-meta">⭐ 4.3 · 3★ · A Coruña centre</div>
+          <div class="hotel-amenities">Free Wi-Fi · Air conditioning · Kid-friendly · Breakfast optional</div>
+          <div class="hotel-actions">
+            <a href="http://www.bookassist.com/directlink.action?g_h_id=102-2430&s=5&user_language=en&user_currency=GBP&date_in=2026-07-26&date_out=2026-07-27&nn=1&site=localuniversal&&adType=0" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-0-0" onchange="toggleBooked(0,'Hotel Alda El Suizo',this.checked)">
+            <label for="chk-0-0" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£49</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.3</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-0-1">
+        <div class="hotel-left">
+          <div class="hotel-name">Carrís Marineda <span class="tier">💰💰 Mid</span></div>
+          <div class="hotel-meta">⭐ 4.3 · 4★ · Free parking · Breakfast included</div>
+          <div class="hotel-amenities">Free Wi-Fi · Restaurant · Bar · Airport shuttle · Kid-friendly</div>
+          <div class="hotel-actions">
+            <a href="https://reservations.travelclick.com/100047?datein=07%2F26%2F2026&nights=1&adults=2&children=0&childage=&hotelID=100047&rateplanID=2172337&roomtypeID=425652&currency=GBP&languageid=en&gdp=hotelfinder" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-0-1" onchange="toggleBooked(0,'Carrís Marineda',this.checked)">
+            <label for="chk-0-1" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£66</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.3</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-0-2">
+        <div class="hotel-left">
+          <div class="hotel-name">Meliá María Pita <span class="tier">💰💰💰 Premium</span></div>
+          <div class="hotel-meta">⭐ 4.4 · 4★ · Seafront, 50m from beach · Duplex family rooms</div>
+          <div class="hotel-amenities">Free Wi-Fi · Fitness center · Bar · Restaurant · Room service · Kid-friendly</div>
+          <div class="hotel-actions">
+            <a href="https://www.melia.com/es/hoteles/espana/a-coruna/melia-maria-pita?" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-0-2" onchange="toggleBooked(0,'Meliá María Pita',this.checked)">
+            <label for="chk-0-2" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£75</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.4</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-0-3">
+        <div class="hotel-left">
+          <div class="hotel-name">Eurostars Cidade da Coruña <span class="tier">💰💰💰💰 Splurge</span></div>
+          <div class="hotel-meta">⭐ 4.2 · 4★ · Central · Beach access · Free parking</div>
+          <div class="hotel-amenities">Free Wi-Fi · Free parking · Fitness center · Restaurant · Bar · Business center · Kid-friendly</div>
+          <div class="hotel-actions">
+            <a href="https://meta2.booking-channel.com/api/google/getBooking?hid=E007&checkin=20260726&checkout=20260727&language=en&country=US&currency=GBP&pax=2&room_id=1&device=desktop&adType=0&numAdults=2&numChildren=0" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-0-3" onchange="toggleBooked(0,'Eurostars Cidade da Coruña',this.checked)">
+            <label for="chk-0-3" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£102</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.2</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <div class="footer" style="background:#1a3a2a;color:rgba(255,255,255,.65);text-align:center;padding:28px;font-family:sans-serif;font-size:.8em;line-height:2.1;">
-    <strong>Total: ~2 830 km · Booking Ref: VX35347 · Brittany Ferries · Ferry: Salamanca</strong><br>
-    Outbound: Portsmouth → Santander · 24 Jul 22:00 · Arrive 26 Jul 08:00<br>
-    Return: Santander → Portsmouth · 9 Aug 14:00 · Arrive 10 Aug 17:30<br>
-    <em>MS Rebecca Williams · 3 Adults · 3 Children · Land Rover Defender 110 TD5 · LJ51NOX</em>
+  <!-- ──────────── 2. PORTO ──────────── -->
+  <div class="dest" id="dest-1">
+    <div class="dest-header">
+      <div>
+        <h3>🌊 Porto / Matosinhos, Portugal</h3>
+        <div class="meta">Mon 27 Jul → Wed 29 Jul · 2 nights · ~3 hrs from La Coruña</div>
+      </div>
+      <div class="dest-links">
+        <a href="https://www.airbnb.co.uk/s/Matosinhos--Portugal/homes?checkin=2026-07-27&checkout=2026-07-29&adults=2&children=4&min_bedrooms=3" target="_blank" class="btn-sm btn-airbnb">🏠 Airbnb</a>
+        <a href="https://www.booking.com/searchresults.en-gb.html?dest_name=Matosinhos&checkin_year=2026&checkin_month=7&checkin_monthday=27&checkout_year=2026&checkout_month=7&checkout_monthday=29&group_adults=2&group_children=4&age=16&age=11&age=14&age=14" target="_blank" class="btn-sm btn-booking">🏨 Booking.com</a>
+        <a href="https://maps.google.com/?q=Matosinhos+Porto+Portugal" target="_blank" class="btn-sm btn-maps">📍 Map</a>
+      </div>
+    </div>
+    <div class="hotels">
+
+      <div class="hotel-card" id="hcard-1-0">
+        <div class="hotel-left">
+          <div class="hotel-name">Harbour Inn Design Townhouse <span class="tier">💰 Budget</span></div>
+          <div class="hotel-meta">⭐ 4.8 · Boutique · Matosinhos · Breakfast included · Airport shuttle</div>
+          <div class="hotel-amenities">Free Wi-Fi · Restaurant · Smoke-free · Kid-friendly</div>
+          <div class="hotel-actions">
+            <a href="https://webhooks.amenitiz.io/google_hotel/landing-page?partner_hotel_id=uE2MDfMPP0JvgugdgMu2&checkin_date=2026-07-27&checkout_date=2026-07-29&num_adults=2&num_children=0&locale=en" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-1-0" onchange="toggleBooked(1,'Harbour Inn Design Townhouse',this.checked)">
+            <label for="chk-1-0" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£78</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.8</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-1-1">
+        <div class="hotel-left">
+          <div class="hotel-name">HF Ipanema Park <span class="tier">💰💰 Mid</span></div>
+          <div class="hotel-meta">⭐ 4.4 · 5★ · Pools & Spa · Foz do Douro area</div>
+          <div class="hotel-amenities">Pools · Hot tub · Spa · Fitness center · Bar · Restaurant · Full-service laundry</div>
+          <div class="hotel-actions">
+            <a href="https://wtbngprod-cdn.official-rates.com/xml/fichesatellite.phtml?tosite=tmphotel&from=Dist-GHP&DistNum=TAPT86494115&fromdate=2026-07-27&todate=2026-07-29&lg=en&nbadult=2&currency=GBP&tdp=159.90&vrfc=false&offercode=mItdb0vzEyk&roomId=46541&usercountry=US&device=desktop&price=159.90&organicLink=true&rateId=54214" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-1-1" onchange="toggleBooked(1,'HF Ipanema Park',this.checked)">
+            <label for="chk-1-1" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£80</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.4</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-1-2">
+        <div class="hotel-left">
+          <div class="hotel-name">Ocean Porto – Beach House <span class="tier">💰💰💰 Premium</span></div>
+          <div class="hotel-meta">⭐ 4.9 · Highest rated on the trip · Matosinhos beachfront · Free breakfast & pool</div>
+          <div class="hotel-amenities">Outdoor pool · Hot tub · Free breakfast · Airport shuttle · Kid-friendly</div>
+          <div class="hotel-actions">
+            <a href="http://www.oceanporto.com/" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-1-2" onchange="toggleBooked(1,'Ocean Porto Beach House',this.checked)">
+            <label for="chk-1-2" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">POA</div>
+          <div class="hotel-price-sub">check direct</div>
+          <div class="hotel-rating">⭐ 4.9</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-1-3">
+        <div class="hotel-left">
+          <div class="hotel-name">Sheraton Porto Hotel &amp; Spa <span class="tier">💰💰💰💰 Splurge</span></div>
+          <div class="hotel-meta">⭐ 4.6 · 5★ · Full hotel · Indoor pool & spa · Central Porto</div>
+          <div class="hotel-amenities">Indoor pool · Hot tub · Spa · Fitness · Bar · Restaurant · Accessible · Business center</div>
+          <div class="hotel-actions">
+            <a href="https://www.marriott.com/reservation/availabilitySearch.mi?cid=OMS_GLB0002Y27_GLE00070C9_GLF000C1AH&pId=&isSearch=false&propertyCode=OPOSI&fromDate=07/27/2026&toDate=07/29/2026&numberOfRooms=1&numberOfGuests=2&currency=GBP" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-1-3" onchange="toggleBooked(1,'Sheraton Porto Hotel & Spa',this.checked)">
+            <label for="chk-1-3" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£144</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.6</div>
+        </div>
+      </div>
+
+    </div>
   </div>
+
+  <!-- ──────────── 3. CASCAIS ──────────── -->
+  <div class="dest" id="dest-2">
+    <div class="dest-header">
+      <div>
+        <h3>🏖️ Cascais, Portugal</h3>
+        <div class="meta">Wed 29 Jul → Fri 31 Jul · 2 nights · ~3.5 hrs from Porto · Sintra day trip</div>
+      </div>
+      <div class="dest-links">
+        <a href="https://www.airbnb.co.uk/s/Cascais--Portugal/homes?checkin=2026-07-29&checkout=2026-07-31&adults=2&children=4&min_bedrooms=3" target="_blank" class="btn-sm btn-airbnb">🏠 Airbnb</a>
+        <a href="https://www.booking.com/searchresults.en-gb.html?dest_name=Cascais&checkin_year=2026&checkin_month=7&checkin_monthday=29&checkout_year=2026&checkout_month=7&checkout_monthday=31&group_adults=2&group_children=4&age=16&age=11&age=14&age=14" target="_blank" class="btn-sm btn-booking">🏨 Booking.com</a>
+        <a href="https://maps.google.com/?q=Cascais+Portugal" target="_blank" class="btn-sm btn-maps">📍 Map</a>
+      </div>
+    </div>
+    <div class="hotels">
+
+      <div class="hotel-card" id="hcard-2-0">
+        <div class="hotel-left">
+          <div class="hotel-name">Hotel Baía <span class="tier">💰💰 Mid</span></div>
+          <div class="hotel-meta">⭐ 4.4 · 4★ · Marina frontage · Pastel de nata on arrival · Breakfast included</div>
+          <div class="hotel-amenities">Outdoor pool · Beach access · Free breakfast · Bar · Restaurant · Airport shuttle</div>
+          <div class="hotel-actions">
+            <a href="https://book.hotelbaia.com/?channelKey=63ba6985b2b2326e2c1674774edb222c&apikey=da0e918598739ce1c70e56164a431036&gc=da0e918598739ce1c70e56164a431036&startDay=2026-07-29&nrNights=2&l=en&cur=GBP&select=p58r4&nrAdults=2&nrChildren=0&childrenAges=[]" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-2-0" onchange="toggleBooked(2,'Hotel Baía',this.checked)">
+            <label for="chk-2-0" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£204</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.4</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-2-1">
+        <div class="hotel-left">
+          <div class="hotel-name">Villa Cascais <span class="tier">💰💰💰 Premium</span></div>
+          <div class="hotel-meta">⭐ 4.5 · 4★ · Town centre · Free breakfast · Beach access</div>
+          <div class="hotel-amenities">Free breakfast · Free parking · Beach access · Bar · Restaurant · Airport shuttle · Full laundry</div>
+          <div class="hotel-actions">
+            <a href="https://book.villacollection.pt/?channelKey=63ba6985b2b2326e2c1674774edb222c&apikey=36a975bd3e9f2707b4387d6c02acbe7d&gc=36a975bd3e9f2707b4387d6c02acbe7d&startDay=2026-07-29&nrNights=2&l=en&cur=GBP&select=p21r3&nrAdults=2&nrChildren=0&childrenAges=[]" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-2-1" onchange="toggleBooked(2,'Villa Cascais',this.checked)">
+            <label for="chk-2-1" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£268</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.5</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-2-2">
+        <div class="hotel-left">
+          <div class="hotel-name">Hotel Albatroz Cascais <span class="tier">💰💰💰💰 Splurge</span></div>
+          <div class="hotel-meta">⭐ 4.6 · 5★ · Clifftop with private beach · Free parking · Pet-friendly</div>
+          <div class="hotel-amenities">Pool · Beach access · Free breakfast · Bar · Restaurant · Room service · Airport shuttle</div>
+          <div class="hotel-actions">
+            <a href="https://www.thealbatrozcollection.com/albatrozhotel/m/" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-2-2" onchange="toggleBooked(2,'Hotel Albatroz',this.checked)">
+            <label for="chk-2-2" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">POA</div>
+          <div class="hotel-price-sub">check direct</div>
+          <div class="hotel-rating">⭐ 4.6</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-2-3">
+        <div class="hotel-left">
+          <div class="hotel-name">Hotel Cascais Miragem Health &amp; Spa <span class="tier">💰💰💰💰 Splurge+</span></div>
+          <div class="hotel-meta">⭐ 4.7 · 5★ · Pools · Spa · Sea views · Marginal avenue</div>
+          <div class="hotel-amenities">Multiple pools · Spa · Fitness · Beach access · Pet-friendly · Bar · Restaurant</div>
+          <div class="hotel-actions">
+            <a href="https://www.cascaismirage.com/" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-2-3" onchange="toggleBooked(2,'Hotel Cascais Miragem',this.checked)">
+            <label for="chk-2-3" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">POA</div>
+          <div class="hotel-price-sub">check direct</div>
+          <div class="hotel-rating">⭐ 4.7</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ──────────── 4. LAGOS ──────────── -->
+  <div class="dest" id="dest-3">
+    <div class="dest-header">
+      <div>
+        <h3>🌅 Lagos, Algarve, Portugal</h3>
+        <div class="meta">Fri 31 Jul → Tue 4 Aug · 4 nights · ~4 hrs from Cascais · Sea caves, clifftop beaches</div>
+      </div>
+      <div class="dest-links">
+        <a href="https://www.airbnb.co.uk/s/Lagos--Portugal/homes?checkin=2026-07-31&checkout=2026-08-04&adults=2&children=4&min_bedrooms=3" target="_blank" class="btn-sm btn-airbnb">🏠 Airbnb</a>
+        <a href="https://www.booking.com/searchresults.en-gb.html?dest_name=Lagos%2C+Algarve&checkin_year=2026&checkin_month=7&checkin_monthday=31&checkout_year=2026&checkout_month=8&checkout_monthday=4&group_adults=2&group_children=4&age=16&age=11&age=14&age=14" target="_blank" class="btn-sm btn-booking">🏨 Booking.com</a>
+        <a href="https://maps.google.com/?q=Lagos+Algarve+Portugal" target="_blank" class="btn-sm btn-maps">📍 Map</a>
+      </div>
+    </div>
+    <div class="hotels">
+
+      <div class="hotel-card" id="hcard-3-0">
+        <div class="hotel-left">
+          <div class="hotel-name">Carvi Beach Hotel Algarve <span class="tier">💰 Budget</span></div>
+          <div class="hotel-meta">⭐ 4.2 · 3★ · Praia Dona Ana · Free breakfast · Fitness · Beach access</div>
+          <div class="hotel-amenities">Free breakfast · Outdoor pool · Fitness · Beach access · Bar · Restaurant · Airport shuttle</div>
+          <div class="hotel-actions">
+            <a href="https://book.carvihotel.com/?channelKey=63ba6985b2b2326e2c1674774edb222c&apikey=a637cf6323d9a32e7fbed60ee8bff97b&gc=a637cf6323d9a32e7fbed60ee8bff97b&startDay=2026-07-31&nrNights=4&l=en&cur=GBP&select=p37r13&nrAdults=2&nrChildren=0&childrenAges=[]" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-3-0" onchange="toggleBooked(3,'Carvi Beach Hotel',this.checked)">
+            <label for="chk-3-0" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£174</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.2</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-3-1">
+        <div class="hotel-left">
+          <div class="hotel-name">Dom Pedro Lagos <span class="tier">💰💰 Mid</span></div>
+          <div class="hotel-meta">⭐ 4.1 · 3★ · Meia Praia · Pool · Free parking · Kitchenettes available</div>
+          <div class="hotel-amenities">Outdoor pool · Beach access · Free parking · Kitchens · Golf · Full laundry</div>
+          <div class="hotel-actions">
+            <a href="https://lagos.dompedro.com/pt/?partner=11122" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-3-1" onchange="toggleBooked(3,'Dom Pedro Lagos',this.checked)">
+            <label for="chk-3-1" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">POA</div>
+          <div class="hotel-price-sub">check direct</div>
+          <div class="hotel-rating">⭐ 4.1</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-3-2">
+        <div class="hotel-left">
+          <div class="hotel-name">Belmar Spa &amp; Beach Resort <span class="tier">💰💰💰 Premium</span></div>
+          <div class="hotel-meta">⭐ 4.5 · 4★ · Clifftop · 5 pools · Spa · Free parking</div>
+          <div class="hotel-amenities">Multiple pools · Hot tub · Spa · Beach access · Fitness · Bar · Restaurant · Kitchens in some rooms</div>
+          <div class="hotel-actions">
+            <a href="http://www.belmarresort.com/" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-3-2" onchange="toggleBooked(3,'Belmar Spa & Beach Resort',this.checked)">
+            <label for="chk-3-2" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">POA</div>
+          <div class="hotel-price-sub">check direct</div>
+          <div class="hotel-rating">⭐ 4.5</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-3-3">
+        <div class="hotel-left">
+          <div class="hotel-name">Villa Esmeralda Hotel <span class="tier">💰💰💰💰 Splurge</span></div>
+          <div class="hotel-meta">⭐ 4.8 · 4★ · Free breakfast · Pool · Beach access · Golf nearby</div>
+          <div class="hotel-amenities">Free breakfast · Outdoor pool · Beach access · Bar · Restaurant · Room service · Smoke-free</div>
+          <div class="hotel-actions">
+            <a href="http://www.villa-esmeralda-algarve.com/" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-3-3" onchange="toggleBooked(3,'Villa Esmeralda Hotel',this.checked)">
+            <label for="chk-3-3" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">POA</div>
+          <div class="hotel-price-sub">check direct</div>
+          <div class="hotel-rating">⭐ 4.8</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ──────────── 5. SEVILLE ──────────── -->
+  <div class="dest" id="dest-4">
+    <div class="dest-header">
+      <div>
+        <h3>🌺 Seville, Spain</h3>
+        <div class="meta">Tue 4 Aug → Thu 6 Aug · 2 nights · ~4 hrs from Lagos · Book Alcázar in advance</div>
+      </div>
+      <div class="dest-links">
+        <a href="https://www.airbnb.co.uk/s/Seville--Spain/homes?checkin=2026-08-04&checkout=2026-08-06&adults=2&children=4&min_bedrooms=3" target="_blank" class="btn-sm btn-airbnb">🏠 Airbnb</a>
+        <a href="https://www.booking.com/searchresults.en-gb.html?dest_name=Seville&checkin_year=2026&checkin_month=8&checkin_monthday=4&checkout_year=2026&checkout_month=8&checkout_monthday=6&group_adults=2&group_children=4&age=16&age=11&age=14&age=14" target="_blank" class="btn-sm btn-booking">🏨 Booking.com</a>
+        <a href="https://maps.google.com/?q=Seville+Spain" target="_blank" class="btn-sm btn-maps">📍 Map</a>
+      </div>
+    </div>
+    <div class="hotels">
+
+      <div class="hotel-card" id="hcard-4-0">
+        <div class="hotel-left">
+          <div class="hotel-name">H10 Corregidor Boutique <span class="tier">💰 Budget</span></div>
+          <div class="hotel-meta">⭐ 4.5 · 3★ · Old Town · Outdoor pool · Smoke-free</div>
+          <div class="hotel-amenities">Outdoor pool · Free Wi-Fi · Air conditioning · Bar · Kid-friendly · Full laundry</div>
+          <div class="hotel-actions">
+            <a href="https://reservation.mirai.com/Forwarder/googleFrontDispatcher.htm?idtokenprovider=100377732&checkin=04%2F08%2F2026&nights=2&lang=en&hsri=02040&adults=2&children=0&ages=&babies=0&googlecrawler=false&currency=GBP&rates=NjY1NjN8NDQxNzZ8MjUwNjM3YjB8MjEwODR8MzQ1MDE5&UserDevice=desktop&clickorigin=NOT-RBM&date_type=selected&campaign_id=organic&googlesite=localuniversal&tt_meta=gha&PPA1=FALSE&user_list_id=&clk_src=&prid=mirai_desktop_us_club" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-4-0" onchange="toggleBooked(4,'H10 Corregidor',this.checked)">
+            <label for="chk-4-0" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£66</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.5</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-4-1">
+        <div class="hotel-left">
+          <div class="hotel-name">Hotel Fernando III Sevilla <span class="tier">💰💰 Mid</span></div>
+          <div class="hotel-meta">⭐ 4.5 · 4★ · Santa Cruz · Pool · Steps from Barrio Santa Cruz</div>
+          <div class="hotel-amenities">Outdoor pool · Fitness · Bar · Restaurant · Room service · Business center · Accessible</div>
+          <div class="hotel-actions">
+            <a href="https://reservation.mirai.com/Forwarder/googleFrontDispatcher.htm?idtokenprovider=100137177&checkin=04%2F08%2F2026&nights=2&lang=en&hsri=02040&adults=2&children=0&ages=&babies=0&googlecrawler=false&currency=GBP&rates=NTk4MHwxMTU5Mnw1ODUxN2IwfDI0Njl8MTk4Mjkw&UserDevice=desktop&clickorigin=NOT-RBM&date_type=selected&campaign_id=organic&googlesite=localuniversal&tt_meta=gha&PPA1=FALSE&user_list_id=&clk_src=&prid=" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-4-1" onchange="toggleBooked(4,'Hotel Fernando III',this.checked)">
+            <label for="chk-4-1" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£85</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.5</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-4-2">
+        <div class="hotel-left">
+          <div class="hotel-name">H10 Casa de la Plata <span class="tier">💰💰💰 Premium</span></div>
+          <div class="hotel-meta">⭐ 4.8 · 4★ · Old Town · Rooftop pool · 2 mins from Alcázar</div>
+          <div class="hotel-amenities">Rooftop pool · Bar · Room service · Airport shuttle · Full laundry · Accessible</div>
+          <div class="hotel-actions">
+            <a href="https://reservation.mirai.com/Forwarder/googleFrontDispatcher.htm?idtokenprovider=100377730&checkin=04%2F08%2F2026&nights=2&lang=en&hsri=02040&adults=2&children=0&ages=&babies=0&googlecrawler=false&currency=GBP&rates=MjUyODh8NDQxMzh8MjUwMzg0YjB8MjEwNTd8MzI5MTk1&UserDevice=desktop&clickorigin=NOT-RBM&date_type=selected&campaign_id=organic&googlesite=localuniversal&tt_meta=gha&PPA1=FALSE&user_list_id=&clk_src=&prid=mirai_desktop_club" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-4-2" onchange="toggleBooked(4,'H10 Casa de la Plata',this.checked)">
+            <label for="chk-4-2" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£97</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.8</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-4-3">
+        <div class="hotel-left">
+          <div class="hotel-name">CoolRooms Palacio Villapanés 5GL <span class="tier">💰💰💰💰 Splurge</span></div>
+          <div class="hotel-meta">⭐ 4.8 · 5★ · Historic palace · Old Town · Pool & Spa</div>
+          <div class="hotel-amenities">Outdoor pool · Spa · Fitness · Bar · Restaurant · Room service · Airport shuttle · Business center</div>
+          <div class="hotel-actions">
+            <a href="https://reservations.travelclick.com/116026?datein=08%2F04%2F2026&nights=2&adults=2&children=0&childage=&hotelID=116026&rateplanID=8349345&roomtypeID=536948&currency=GBP&languageid=en&gdp=hotelfinder" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-4-3" onchange="toggleBooked(4,'CoolRooms Palacio Villapanés',this.checked)">
+            <label for="chk-4-3" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£204</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.8</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ──────────── 6. MADRID ──────────── -->
+  <div class="dest" id="dest-5">
+    <div class="dest-header">
+      <div>
+        <h3>🏙️ Madrid, Spain</h3>
+        <div class="meta">Thu 6 Aug → Fri 7 Aug · 1 night · ~5.5 hrs from Seville · ⚠️ Check ZBE for LJ51NOX</div>
+      </div>
+      <div class="dest-links">
+        <a href="https://www.airbnb.co.uk/s/Madrid--Spain/homes?checkin=2026-08-06&checkout=2026-08-07&adults=2&children=4&min_bedrooms=3" target="_blank" class="btn-sm btn-airbnb">🏠 Airbnb</a>
+        <a href="https://www.booking.com/searchresults.en-gb.html?dest_name=Madrid&checkin_year=2026&checkin_month=8&checkin_monthday=6&checkout_year=2026&checkout_month=8&checkout_monthday=7&group_adults=2&group_children=4&age=16&age=11&age=14&age=14" target="_blank" class="btn-sm btn-booking">🏨 Booking.com</a>
+        <a href="https://maps.google.com/?q=Madrid+Spain+Gran+Via" target="_blank" class="btn-sm btn-maps">📍 Map</a>
+      </div>
+    </div>
+    <div class="hotels">
+
+      <div class="hotel-card" id="hcard-5-0">
+        <div class="hotel-left">
+          <div class="hotel-name">Hotel Catalonia Puerta del Sol <span class="tier">💰💰 Mid</span></div>
+          <div class="hotel-meta">⭐ 4.7 · 4★ · Central · Puerta del Sol · Breakfast included · Pet-friendly</div>
+          <div class="hotel-amenities">Free breakfast · Air conditioning · Bar · Restaurant · Room service · Full laundry · Accessible</div>
+          <div class="hotel-actions">
+            <a href="https://reservation.mirai.com/Forwarder/googleFrontDispatcher.htm?idtokenprovider=37429892&checkin=06%2F08%2F2026&nights=1&lang=en&hsri=02040&adults=2&children=0&ages=&babies=0&googlecrawler=false&currency=GBP&rates=MzEwM3wxOTc3NnwxMTk3MDNiMHw1MTI5fDUxNzA4MA&googlesite=localuniversal&UserDevice=desktop&clickorigin=NOT-RBM&date_type=selected&campaign_id=organic&PPA1=FALSE&user_list_id=&clk_src=&prid=" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-5-0" onchange="toggleBooked(5,'Hotel Catalonia Puerta del Sol',this.checked)">
+            <label for="chk-5-0" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£119</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.7</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-5-1">
+        <div class="hotel-left">
+          <div class="hotel-name">Hotel Indigo Madrid – Gran Via <span class="tier">💰💰💰 Premium</span></div>
+          <div class="hotel-meta">⭐ 4.4 · 4★ · Gran Vía · Rooftop pool · Breakfast included</div>
+          <div class="hotel-amenities">Rooftop pool · Free breakfast · Fitness · Bar · Restaurant · Room service · Full laundry</div>
+          <div class="hotel-actions">
+            <a href="https://www.ihg.com/redirect?path=rates&brandCode=6c&localeCode=en&regionCode=US&currency=EUR&rate=158.18&hotelCode=TOJIN&checkInDate=06&checkInMonthYear=082026&checkOutDate=07&checkOutMonthYear=082026&numberOfAdults=2&numberOfChildren=0&numberOfRooms=1&cm_mmc=hpa_free_META_IN_TOJIN_desktop&glat=FREE&selectedRatePlan=CSTNIDAPF&prid=&partnerAdType=free&userDeviceType=desktop&userCountryCode=US&partnerAdSite=localuniversal&partnerCurrencyCode=EUR&partnerDateType=selected&userSelectedRatePlan=CSTNIDAPF&partnerClickType=hotel&partnerVerification=false&userBookingWindow=159&partnerRateShown=158.18&partnerTotalRateShown=152.87&adjustMonth=true&mktgvar=hpa_free_US_desktop_TOJIN_localuniversal_1_EUR_2026-08-06_selected___FALSE_CSTNIDAPF&clk_src=&isHotelCampaign=true&channel=GHPA" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-5-1" onchange="toggleBooked(5,'Hotel Indigo Gran Via',this.checked)">
+            <label for="chk-5-1" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£153</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.4</div>
+        </div>
+      </div>
+
+      <div class="hotel-card" id="hcard-5-2">
+        <div class="hotel-left">
+          <div class="hotel-name">NH Collection Madrid Palacio de Tepa <span class="tier">💰💰💰💰 Splurge</span></div>
+          <div class="hotel-meta">⭐ 4.6 · 5★ · San Sebastián area · Central · Restaurant · Bar</div>
+          <div class="hotel-amenities">Free Wi-Fi · Air conditioning · Pet-friendly · Bar · Restaurant · Room service · Full laundry · Accessible</div>
+          <div class="hotel-actions">
+            <a href="https://www.nh-hotels.com/en/booking/step1-rates?fini=06%2F08%2F2026&fout=07%2F08%2F2026&nchilds1=0&nadults1=2&hotelId=ESMD.TEPA&divisa=GBP&roomcode=DLUDBL&rateplan=SD1_7-14D&regimen=14&campid=8565112&price=169.57" target="_blank" class="btn-direct">Book Direct →</a>
+          </div>
+          <div class="book-check-wrap">
+            <input type="checkbox" class="book-check" id="chk-5-2" onchange="toggleBooked(5,'NH Collection Palacio de Tepa',this.checked)">
+            <label for="chk-5-2" class="book-label">Mark as booked</label>
+          </div>
+        </div>
+        <div class="hotel-right">
+          <div class="hotel-price">£170</div>
+          <div class="hotel-price-sub">per night</div>
+          <div class="hotel-rating">⭐ 4.6</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<div class="footer">
+  <strong>Iberian Road Trip 2026 · ~2,600 km · 13 nights · 6 destinations</strong><br>
+  Booking Ref: <strong>VX35347</strong> · Brittany Ferries · Ferry: Salamanca<br>
+  Outbound: Portsmouth → Santander · 24 Jul 22:00 · Arrive 26 Jul 08:00<br>
+  Return: Santander → Portsmouth · 9 Aug 14:00 · Arrive 10 Aug 17:30<br>
+  <em>MS Rebecca Williams · Land Rover Defender 110 TD5 · LJ51NOX · 2 Adults · 4 Children (16, 11, 14, 14)</em>
+</div>
+
+<script>
+  const STORAGE_KEY = 'iberian_booked_v2';
+  const TOTAL = 6;
+
+  // Load state
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch(e) { return {}; }
+  }
+
+  function saveState(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch(e) {}
+  }
+
+  function toggleBooked(destIndex, hotelName, checked) {
+    const state = loadState();
+    if (checked) {
+      state[destIndex] = hotelName;
+    } else {
+      delete state[destIndex];
+    }
+    saveState(state);
+    updateUI(state);
+  }
+
+  function updateUI(state) {
+    const count = Object.keys(state).length;
+    document.getElementById('booked-count').textContent = count;
+
+    const pct = Math.round(count / TOTAL * 100);
+    document.getElementById('progress').style.width = pct + '%';
+
+    for (let i = 0; i < TOTAL; i++) {
+      const booked = state[i] !== undefined;
+      // Itinerary table
+      const statusEl = document.getElementById('status-' + i);
+      if (statusEl) {
+        statusEl.className = booked ? 'booked-badge' : 'not-booked';
+        statusEl.textContent = booked ? '✓ Booked: ' + state[i] : 'Not booked';
+      }
+      // Tracker
+      const tEl = document.getElementById('t-' + i);
+      if (tEl) {
+        tEl.className = booked ? 'status-yes' : 'status-no';
+        tEl.textContent = booked ? '✅ Booked: ' + state[i] : '⏳ Not booked';
+      }
+    }
+  }
+
+  function initCheckboxes(state) {
+    // For each booked destination, find and check the right hotel checkbox
+    // and uncheck all others in that dest
+    for (const [destIdx, hotelName] of Object.entries(state)) {
+      const checkboxes = document.querySelectorAll(`[id^="chk-${destIdx}-"]`);
+      checkboxes.forEach(cb => {
+        cb.checked = false;
+        const card = document.getElementById('hcard-' + destIdx + '-' + cb.id.split('-').pop());
+        if (card) card.classList.remove('booked');
+      });
+      // Check the right one
+      checkboxes.forEach(cb => {
+        if (cb.onchange) {
+          // find which hotel this is
+          const label = document.querySelector(`[for="${cb.id}"]`);
+        }
+      });
+    }
+  }
+
+  // Ensure only one hotel per destination can be marked
+  document.querySelectorAll('.book-check').forEach(cb => {
+    cb.addEventListener('change', function() {
+      if (this.checked) {
+        const parts = this.id.split('-');
+        const destIdx = parts[1];
+        // Uncheck all others in same dest
+        document.querySelectorAll(`[id^="chk-${destIdx}-"]`).forEach(other => {
+          if (other !== this) {
+            other.checked = false;
+            const othCard = other.closest('.hotel-card');
+            if (othCard) othCard.classList.remove('booked');
+          }
+        });
+        const card = this.closest('.hotel-card');
+        if (card) card.classList.add('booked');
+      } else {
+        const card = this.closest('.hotel-card');
+        if (card) card.classList.remove('booked');
+      }
+    });
+  });
+
+  // Init on load
+  const state = loadState();
+  // Restore checkboxes
+  for (const [destIdx, hotelName] of Object.entries(state)) {
+    const checkboxes = document.querySelectorAll(`[id^="chk-${destIdx}-"]`);
+    checkboxes.forEach(cb => {
+      const label = document.querySelector(`[for="${cb.id}"]`);
+      if (label && cb.onchange) {
+        // Identify via the card
+        const card = cb.closest('.hotel-card');
+        const nameEl = card ? card.querySelector('.hotel-name') : null;
+        if (nameEl && nameEl.textContent.includes(hotelName.substring(0, 10))) {
+          cb.checked = true;
+          card.classList.add('booked');
+        }
+      }
+    });
+  }
+  updateUI(state);
+</script>
 
 </body>
 </html>
